@@ -9,7 +9,7 @@ var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 var TaskList = require('./routes/tasklist');
-var taskList = new TaskList(process.env.CUSTOMCONNSTR_MONGOLAB_URI)
+var taskList = new TaskList(process.env.CUSTOMCONNSTR_MONGOLAB_URI);
 
 var app = express();
 
@@ -29,11 +29,12 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.showTasks.bind(taskList));
+
 app.get('/users', user.list);
 
-app.post('/', taskList.addTask.bind(taskList));
-app.post('/completetask', taskList.completeTask.bind(taskList);
+app.get('/', taskList.showTasks.bind(taskList));
+app.post('/addtask', taskList.addTask.bind(taskList));
+app.post('/completetask', taskList.completeTask.bind(taskList));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
